@@ -31,18 +31,18 @@ class Customers(models.Model):
         (MEMBERSHIP_GOLD, 'Gold'),
         (MEMBERSHIP_DIAMOND, 'Diamond'),
     ]
-    first_name = models.CharField(max_length=100)
+    given_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
     birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
 
-    class Meta:
-        db_table = 'store_customers'
-        indexes = [
-            models.Index(fields=['last_name', 'first_name'])
-        ]
+    # class Meta:
+    #     db_table = 'store_customers'
+    #     indexes = [
+    #         models.Index(fields=['last_name', 'first_name'])
+    #     ]
 
 class Order(models.Model):
     PAYMENT_PENDING = 'P'
