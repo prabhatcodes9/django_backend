@@ -11,14 +11,26 @@ class Collection(models.Model):
     title = models.CharField(max_length=255)
     featured_product = models.ForeignKey('Product', on_delete = models.SET_NULL, null = True, related_name='+')
 
+    def __str__(self) -> str:
+        return self.title
+    
+    class Meta:
+        ordering = ['title']
+
 class Product(models.Model):
     title = models.CharField(max_length=255) #varchar(255)
     description = models.TextField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
-    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name= 'products')
     promotions = models.ManyToManyField(Promotion)
+
+    def __str__(self) -> str:
+        return self.title
+    
+    class Meta:
+        ordering = ['title']
 
 class Customers(models.Model):
     MEMBERSHIP_BRONZE = 'B'
@@ -37,6 +49,11 @@ class Customers(models.Model):
     phone = models.CharField(max_length=20)
     birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+    class Meta:
+        ordering = ['first_name', 'last_name']
 
     # class Meta:
     #     db_table = 'store_customers'
@@ -58,6 +75,7 @@ class Order(models.Model):
     placed_at = models.DateTimeField(auto_now_add=True)
     payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
     orders = models.ForeignKey(Customers, on_delete=models.PROTECT)
+
 
 class OrderItem(models.Model):
     item_name = models.CharField(max_length=255)
