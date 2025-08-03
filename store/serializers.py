@@ -16,13 +16,10 @@ class ProductSerializer(serializers.ModelSerializer):
         return product.unit_price * Decimal(1.2)
 
 class CollectionSerializer(serializers.ModelSerializer):
-    products_count = serializers.SerializerMethodField()
-
     class Meta:
         model = Collection
         fields = ['id', 'title', 'products_count']
 
-    def get_products_count(self, collection):
-        return collection.products.count()  # or collection.products.count() if you used related_name='products'
+    products_count = serializers.IntegerField(read_only=True)
     
 
