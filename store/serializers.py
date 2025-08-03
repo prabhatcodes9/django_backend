@@ -1,6 +1,7 @@
 from decimal import Decimal
 from rest_framework import serializers
 from .models import Product, Collection
+from django.db.models import Count
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,6 +14,15 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def calculate_tax(self, product: Product):
         return product.unit_price * Decimal(1.2)
-    
+
+class CollectionSerializer(serializers.ModelSerializer):
+    products_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Collection
+        fields = ['id', 'title', 'products_count']
+
+    def get_products_count(self, collection):
+        return collection.products.count()  # or collection.products.count() if you used related_name='products'
     
 
