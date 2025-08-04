@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from .models import Product, Collection, Review
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer
@@ -14,8 +15,11 @@ from django.db.models import Count
 # Create your views here.
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.select_related('collection').all()
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['collection_id']
+    
     
     def get_serializer_context(self):
         return {'request': self.request}
