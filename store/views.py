@@ -84,17 +84,17 @@ class CollectionViewSet(ModelViewSet):
 #         serializer.save()
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class CollectionDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Collection.objects.annotate(products_count=Count('products'))
-    serializer_class = CollectionSerializer
-    lookup_field = 'id'
+# class CollectionDetail(RetrieveUpdateDestroyAPIView):
+#     queryset = Collection.objects.annotate(products_count=Count('products'))
+#     serializer_class = CollectionSerializer
+#     lookup_field = 'id'
 
-    def delete(self, request, id):
-        collection = get_object_or_404(Collection, id=id)
-        if collection.products.count() > 0:
-            return Response({'error': 'Collection cannot be deleted'})
-        collection.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self, request, id):
+#         collection = get_object_or_404(Collection, id=id)
+#         if collection.products.count() > 0:
+#             return Response({'error': 'Collection cannot be deleted'})
+#         collection.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
     
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def collection_detail(request, id):
